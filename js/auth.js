@@ -24,9 +24,32 @@
     // ============================================================
 
     function initAuth() {
-    // 直接设置为已验证，跳过验证
+    // 1. 检查本地是否已验证
+    if (localStorage.getItem(STORAGE_KEY) === "true") {
+        showContent();
+        return;
+    }
+
+    // 直接设置验证通过（不弹出验证窗口）
     localStorage.setItem(STORAGE_KEY, "true");
     showContent();
+    return;
+
+    // 下面的代码不会执行
+    // 2. 初始化 Bmob
+    let isBmobReady = false;
+    if (typeof Bmob !== 'undefined' && BMOB_SECRET_KEY !== "YOUR_SECRET_KEY") {
+        try {
+            Bmob.initialize(BMOB_SECRET_KEY, BMOB_API_KEY);
+            isBmobReady = true;
+            console.log("Bmob initialized.");
+        } catch (e) {
+            console.error("Bmob init failed:", e);
+        }
+    }
+
+    // 3. 创建验证界面 UI
+    createAuthUI(isBmobReady);
     }
     function createAuthUI(isBmobReady) {
         const authOverlay = document.createElement('div');
@@ -222,3 +245,4 @@
         initAuth();
     }
 })();
+
