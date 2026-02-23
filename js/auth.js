@@ -24,12 +24,10 @@
     // ============================================================
 
     function initAuth() {
-        // 直接设置为已验证，跳过所有验证流程
-        localStorage.setItem(STORAGE_KEY, "true");
-        showContent();
-        return;
+    // 直接设置为已验证，跳过验证
+    localStorage.setItem(STORAGE_KEY, "true");
+    showContent();
     }
-
     function createAuthUI(isBmobReady) {
         const authOverlay = document.createElement('div');
         authOverlay.id = 'auth-overlay';
